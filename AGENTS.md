@@ -44,7 +44,7 @@ Backend note: in `backend/`, the `typescript` package is aliased to the TypeScri
 
 ## Specs
 
-Stored in `docs/specs/`. Format: `docs/specs/NNNN-title.md`.
+Stored in `docs/specs/`. Format: `docs/specs/NNNN-title/index.md`, with `rationale.md` and `verify.md` beside it.
 
 ## Rules
 
@@ -61,9 +61,12 @@ Stored in `docs/specs/`. Format: `docs/specs/NNNN-title.md`.
 - separation of concerns (hooks hold logic, data holds data, components render view)
 - file strictly under 600 lines
 - comments only when necessary and single line only
+- Domain writes go through `backend/src/lib/repository.ts` (UUID v4 ids from `crypto.randomUUID`, an Activity row for created and updated, closed set columns validated against `backend/src/lib/constants.ts`); default reads filter `deletedAt IS NULL`, and reads that cross a relation filter soft deleted parents
+- Day boundaries come from `backend/src/lib/timezone.ts`, which reads the `TIMEZONE` env var (IANA zone, default UTC, an unparseable value fails config load); no other code builds a Date for domain logic
 
 ## Git
 
+- Create a new branch for every new feature when /develop is used
 - integration: on
 - branch prefix: feat/, fix/, chore/
 - commit: per-milestone

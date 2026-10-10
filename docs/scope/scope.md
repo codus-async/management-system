@@ -15,7 +15,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | B | Backend scaffold | Foundation | in-progress |
 | 18 | Stack & architecture | Foundation | in-progress |
 | 1 | Coding standards & tooling | Foundation | done |
-| 2 | Data model | Foundation | in-progress |
+| 2 | Data model | Foundation | done |
 | 3 | Design system & UI foundation | Foundation | planned |
 | 4 | Auth & roles | Slice 1 | planned |
 | 5 | Schedule & meetings | Slice 1 | planned |
@@ -57,7 +57,7 @@ Capture conventions from the real scaffold, then install lint, format, and pre c
 - [x] Check it runs clean: `/test`
 Tooling in `package.json`, `.prettierrc.json`, `.husky/pre-commit`, `.husky/commit-msg`, `commitlint.config.js`, `.github/workflows/ci.yml`, `backend/eslint.config.mjs`, `backend/vitest.config.ts`, `AGENTS.md`
 
-### 2. Data model · in-progress
+### 2. Data model · done
 The core entities every later slice builds on: users and roles, meetings, tasks, contacts, follow ups, pending decisions, attachments, activity for trash.
 **Done when:** entities and relationships support every later slice (schedule, tasks, contacts, follow ups, decisions, briefings) without a breaking migration.
 - [x] Design it (spec): `/architect data model`
