@@ -14,7 +14,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | A | Client scaffold | Foundation | existing |
 | B | Backend scaffold | Foundation | in-progress |
 | 18 | Stack & architecture | Foundation | in-progress |
-| 1 | Coding standards & tooling | Foundation | in-progress |
+| 1 | Coding standards & tooling | Foundation | done |
 | 2 | Data model | Foundation | planned |
 | 3 | Design system & UI foundation | Foundation | planned |
 | 4 | Auth & roles | Slice 1 | planned |
@@ -49,12 +49,12 @@ Execute the stack decision from spec 0001: one git repo at the root, both apps b
 - [x] Test it: `/test stack & architecture`
 Spec [0001](../specs/0001-stack-and-architecture/index.md) · code in `backend/`, `client/`, `render.yaml`, `docs/deploy.md`
 
-### 1. Coding standards & tooling · in-progress
+### 1. Coding standards & tooling · done
 Capture conventions from the real scaffold, then install lint, format, and pre commit checks. There is no root `AGENTS.md` yet, so this is the first stop for real context.
 **Done when:** root `AGENTS.md` reflects the real stack, and lint, format, and pre commit checks run clean.
 - [x] Capture conventions and tooling choices: `/audit`
 - [x] Install the tooling: `/develop tooling`
-- [ ] Check it runs clean: `/test`
+- [x] Check it runs clean: `/test`
 Tooling in `package.json`, `.prettierrc.json`, `.husky/pre-commit`, `.husky/commit-msg`, `commitlint.config.js`, `.github/workflows/ci.yml`, `backend/eslint.config.mjs`, `backend/vitest.config.ts`, `AGENTS.md`
 
 ### 2. Data model · needs a decision

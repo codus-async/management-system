@@ -1,6 +1,12 @@
 {
   "version": 1,
   "skills": {
+    "antfu": {
+      "source": "antfu/skills",
+      "sourceType": "github",
+      "skillPath": "skills/antfu/SKILL.md",
+      "computedHash": "46935e4dc837849a1df6fa968c3ec32c647bd0faecf34f7a3577503f85d7bc52"
+    },
     "api-and-interface-design": {
       "source": "addyosmani/agent-skills",
       "sourceType": "github",
@@ -54,6 +60,12 @@
       "sourceType": "github",
       "skillPath": "skills/platform/cloudinary-transformations/SKILL.md",
       "computedHash": "2f42062f667b53e99339e5c30e8ff0c2af80913ed5e8ccde2e2c2f4adfff7b92"
+    },
+    "conventional-commit": {
+      "source": "github/awesome-copilot",
+      "sourceType": "github",
+      "skillPath": "skills/conventional-commit/SKILL.md",
+      "computedHash": "f29c9486cede6c7b2df0cfb0a2e4aa67446552b991bcf17d1b309e903171f03d"
     },
     "create-auth": {
       "source": "better-auth/skills",
@@ -198,6 +210,12 @@
       "sourceType": "github",
       "skillPath": "skills/shadcn/SKILL.md",
       "computedHash": "f615de216e085a84e31593ad0fa9062232adc40cd87b7c7ab2b8e49abf6500be"
+    },
+    "shared-tooling-eslint-prettier": {
+      "source": "agents-inc/skills",
+      "sourceType": "github",
+      "skillPath": "src/skills/shared-tooling-eslint-prettier/SKILL.md",
+      "computedHash": "532c3bd7f25fef4cc1d59790c0870aab50b8ef663b3e430fd92fbfeb5e11f283"
     },
     "tailwind-design-system": {
       "source": "wshobson/agents",
