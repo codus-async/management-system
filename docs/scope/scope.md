@@ -44,10 +44,10 @@ Express and TypeScript started but not running yet: the dev script points at a m
 Execute the stack decision from spec 0001: one git repo at the root, both apps booting locally on the decided services, the database migrated, auth mounted, and the proxy working.
 **Done when:** both apps run locally against Neon with migrations applied, Better Auth sign in works through the proxy, and the first deploy targets Vercel and Render with the environment variables documented.
 - [x] Design it (spec): `/architect stack & architecture`
-- [ ] Scaffold from the decision: `/develop stack & architecture`
-- [ ] Verify it: `/check verify stack & architecture`
-- [ ] Test it: `/test stack & architecture`
-Spec [0001](../specs/0001-stack-and-architecture/index.md)
+- [x] Scaffold from the decision: `/develop stack & architecture`
+- [x] Verify it: `/check verify stack & architecture`
+- [x] Test it: `/test stack & architecture`
+Spec [0001](../specs/0001-stack-and-architecture/index.md) · code in `backend/`, `client/`, `render.yaml`, `docs/deploy.md`
 
 ### 1. Coding standards & tooling
 Capture conventions from the real scaffold, then install lint, format, and pre commit checks. There is no root `AGENTS.md` yet, so this is the first stop for real context.

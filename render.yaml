@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: ceo-pa-api
+    runtime: node
+    rootDir: backend
+    numReplicas: 1
+    healthCheckPath: /api/v1/health
+    buildCommand: npm ci && npm run build && npm run db:deploy
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_URL_UNPOOLED
+        sync: false
+      - key: BETTER_AUTH_SECRET
+        generateValue: true
+      - key: BETTER_AUTH_URL
+        sync: false
+      - key: LOG_LEVEL
+        value: info
