@@ -12,7 +12,9 @@ const people = [
 
 async function seed() {
   for (const person of people) {
-    const existing = await prisma.user.findUnique({ where: { email: person.email } });
+    const existing = await prisma.user.findUnique({
+      where: { email: person.email },
+    });
     if (existing) {
       console.log(`exists  ${person.email}`);
       continue;

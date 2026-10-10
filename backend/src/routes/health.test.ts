@@ -48,7 +48,9 @@ describe("routes/health", () => {
   });
 
   it("never leaks the database error text to the caller", async () => {
-    queryRaw.mockRejectedValue(new Error("password authentication failed for user neondb"));
+    queryRaw.mockRejectedValue(
+      new Error("password authentication failed for user neondb"),
+    );
 
     const res = await request(app).get("/api/v1/health");
 

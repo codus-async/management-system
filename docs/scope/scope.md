@@ -14,7 +14,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | A | Client scaffold | Foundation | existing |
 | B | Backend scaffold | Foundation | in-progress |
 | 18 | Stack & architecture | Foundation | in-progress |
-| 1 | Coding standards & tooling | Foundation | planned |
+| 1 | Coding standards & tooling | Foundation | in-progress |
 | 2 | Data model | Foundation | planned |
 | 3 | Design system & UI foundation | Foundation | planned |
 | 4 | Auth & roles | Slice 1 | planned |
@@ -44,17 +44,18 @@ Express and TypeScript started but not running yet: the dev script points at a m
 Execute the stack decision from spec 0001: one git repo at the root, both apps booting locally on the decided services, the database migrated, auth mounted, and the proxy working.
 **Done when:** both apps run locally against Neon with migrations applied, Better Auth sign in works through the proxy, and the first deploy targets Vercel and Render with the environment variables documented.
 - [x] Design it (spec): `/architect stack & architecture`
-- [ ] Scaffold from the decision: `/develop stack & architecture`
-- [ ] Verify it: `/check verify stack & architecture`
-- [ ] Test it: `/test stack & architecture`
-Spec [0001](../specs/0001-stack-and-architecture/index.md)
+- [x] Scaffold from the decision: `/develop stack & architecture`
+- [x] Verify it: `/check verify stack & architecture`
+- [x] Test it: `/test stack & architecture`
+Spec [0001](../specs/0001-stack-and-architecture/index.md) · code in `backend/`, `client/`, `render.yaml`, `docs/deploy.md`
 
-### 1. Coding standards & tooling
+### 1. Coding standards & tooling · in-progress
 Capture conventions from the real scaffold, then install lint, format, and pre commit checks. There is no root `AGENTS.md` yet, so this is the first stop for real context.
 **Done when:** root `AGENTS.md` reflects the real stack, and lint, format, and pre commit checks run clean.
-- [ ] Capture conventions and tooling choices: `/audit`
-- [ ] Install the tooling: `/develop tooling`
+- [x] Capture conventions and tooling choices: `/audit`
+- [x] Install the tooling: `/develop tooling`
 - [ ] Check it runs clean: `/test`
+Tooling in `package.json`, `.prettierrc.json`, `.husky/pre-commit`, `.husky/commit-msg`, `commitlint.config.js`, `.github/workflows/ci.yml`, `backend/eslint.config.mjs`, `backend/vitest.config.ts`, `AGENTS.md`
 
 ### 2. Data model · needs a decision
 The core entities every later slice builds on: users and roles, meetings, tasks, contacts, follow ups, pending decisions, attachments, activity for trash.

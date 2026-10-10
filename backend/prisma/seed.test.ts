@@ -53,7 +53,9 @@ describe("prisma/seed", () => {
 
     await vi.waitFor(() => expect(findUnique).toHaveBeenCalledTimes(2));
     expect(run.signUpEmail).not.toHaveBeenCalled();
-    await vi.waitFor(() => expect(run.logged()).toContain("exists  ceo@example.com"));
+    await vi.waitFor(() =>
+      expect(run.logged()).toContain("exists  ceo@example.com"),
+    );
     expect(run.logged()).toContain("exists  pa@example.com");
     await vi.waitFor(() => expect(run.disconnect).toHaveBeenCalled());
   });
@@ -78,16 +80,22 @@ describe("prisma/seed", () => {
         password: "local-dev-password",
       },
     });
-    await vi.waitFor(() => expect(run.logged()).toContain("created pa@example.com"));
+    await vi.waitFor(() =>
+      expect(run.logged()).toContain("created pa@example.com"),
+    );
     expect(run.logged()).toContain("created ceo@example.com");
   });
 
   it("reports the failure and marks the run failed when the database is unreachable", async () => {
-    const findUnique = vi.fn().mockRejectedValue(new Error("database unreachable"));
+    const findUnique = vi
+      .fn()
+      .mockRejectedValue(new Error("database unreachable"));
 
     const run: SeedRun = await runSeed(findUnique);
 
-    await vi.waitFor(() => expect(run.errored()).toContain("database unreachable"));
+    await vi.waitFor(() =>
+      expect(run.errored()).toContain("database unreachable"),
+    );
     expect(process.exitCode).toBe(1);
     expect(run.signUpEmail).not.toHaveBeenCalled();
     await vi.waitFor(() => expect(run.disconnect).toHaveBeenCalled());

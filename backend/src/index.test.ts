@@ -33,7 +33,11 @@ function freePort(): Promise<number> {
   });
 }
 
-async function waitFor(check: () => boolean, timeoutMs: number, what: string): Promise<void> {
+async function waitFor(
+  check: () => boolean,
+  timeoutMs: number,
+  what: string,
+): Promise<void> {
   const deadline = Date.now() + timeoutMs;
   while (Date.now() < deadline) {
     if (check()) return;
@@ -60,35 +64,45 @@ function boot(extraEnv: Record<string, string>) {
 }
 
 describe("index (boot)", () => {
-  it("boots from source, logs the port it took, and answers api requests", { timeout: 60_000 }, async () => {
-    const port = await freePort();
-    const { child, read } = boot({ PORT: String(port) });
+  it(
+    "boots from source, logs the port it took, and answers api requests",
+    { timeout: 60_000 },
+    async () => {
+      const port = await freePort();
+      const { child, read } = boot({ PORT: String(port) });
 
-    try {
-      await waitFor(
-        () => read().stdout.includes('"msg":"api listening"') || child.exitCode !== null,
-        45_000,
-        "the api listening log line",
-      );
+      try {
+        await waitFor(
+          () =>
+            read().stdout.includes('"msg":"api listening"') ||
+            child.exitCode !== null,
+          45_000,
+          "the api listening log line",
+        );
 
-      expect(child.exitCode).toBeNull();
-      expect(read().stdout).toContain(`"port":${port}`);
+        expect(child.exitCode).toBeNull();
+        expect(read().stdout).toContain(`"port":${port}`);
 
-      const res = await fetch(`http://127.0.0.1:${port}/api/v1/nope`);
-      expect(res.status).toBe(404);
-    } finally {
-      child.kill("SIGTERM");
-      await once(child, "exit").catch(() => undefined);
-    }
-  });
+        const res = await fetch(`http://127.0.0.1:${port}/api/v1/nope`);
+        expect(res.status).toBe(404);
+      } finally {
+        child.kill("SIGTERM");
+        await once(child, "exit").catch(() => undefined);
+      }
+    },
+  );
 
-  it("stops with a clear message when a required variable is missing", { timeout: 60_000 }, async () => {
-    const { child, read } = boot({ DATABASE_URL: "" });
+  it(
+    "stops with a clear message when a required variable is missing",
+    { timeout: 60_000 },
+    async () => {
+      const { child, read } = boot({ DATABASE_URL: "" });
 
-    const [code] = await once(child, "exit");
+      const [code] = await once(child, "exit");
 
-    expect(code).toBe(1);
-    expect(read().stderr).toContain("Invalid environment variables:");
-    expect(read().stderr).toContain("DATABASE_URL");
-  });
+      expect(code).toBe(1);
+      expect(read().stderr).toContain("Invalid environment variables:");
+      expect(read().stderr).toContain("DATABASE_URL");
+    },
+  );
 });

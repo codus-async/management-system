@@ -1,0 +1,11 @@
+branch=$(git rev-parse --abbrev-ref HEAD)
+case "$branch" in
+main | feat/* | fix/* | chore/*) ;;
+*)
+  echo "Branch name not allowed: $branch"
+  echo "Use feat/..., fix/..., or chore/... (main is exempt)."
+  exit 1
+  ;;
+esac
+
+npm run verify

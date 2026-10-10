@@ -66,7 +66,7 @@ Decisions the build would otherwise have to invent. Recorded here so `/develop` 
 - Deleting an attachment removes the Cloudinary asset first, then the database row; a sweep script finds orphans when the second step fails.
 
 **Tests**
-- Vitest with supertest against the real Express app; the test database is a dedicated Neon branch, or a disposable local Postgres. Playwright config lives at the repo root and its web server mode starts both apps. No continuous integration yet; there is no git remote.
+- Vitest with supertest against the real Express app; the test database is a dedicated Neon branch, or a disposable local Postgres. Playwright config lives at the repo root and its web server mode starts both apps. Continuous integration runs lint, typecheck, and tests on push to GitHub, added with the tooling feature. The remote is origin (github.com/dev-Vortex51/management-system).
 
 **Errors and logs**
 - `@sentry/nextjs` in the web app (source maps uploaded at build time with `SENTRY_AUTH_TOKEN`), `@sentry/node` in the API. pino writes structured logs to standard output, where Render captures them.

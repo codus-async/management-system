@@ -17,8 +17,20 @@ vi.hoisted(() => {
 
 const backendRoot = fileURLToPath(new URL("../../", import.meta.url));
 const envEntry = fileURLToPath(new URL("./env.ts", import.meta.url));
-const preflight = path.join(backendRoot, "node_modules", "tsx", "dist", "preflight.cjs");
-const loader = path.join(backendRoot, "node_modules", "tsx", "dist", "loader.mjs");
+const preflight = path.join(
+  backendRoot,
+  "node_modules",
+  "tsx",
+  "dist",
+  "preflight.cjs",
+);
+const loader = path.join(
+  backendRoot,
+  "node_modules",
+  "tsx",
+  "dist",
+  "loader.mjs",
+);
 
 const probe = `import(${JSON.stringify(envEntry)}).then((m) => console.log("PORT=" + m.env.PORT + " LOG_LEVEL=" + m.env.LOG_LEVEL + " NODE_ENV=" + m.env.NODE_ENV));`;
 
@@ -32,7 +44,9 @@ function runEnvModule(cwd: string, envToUse: NodeJS.ProcessEnv) {
 
 describe("config/env", () => {
   it("exports every variable the apps depend on", () => {
-    expect(env.DATABASE_URL).toBe("postgresql://user:password@localhost:5432/test");
+    expect(env.DATABASE_URL).toBe(
+      "postgresql://user:password@localhost:5432/test",
+    );
     expect(env.BETTER_AUTH_URL).toBe("http://localhost:3000");
     expect(env.BETTER_AUTH_SECRET).toHaveLength(40);
     expect(env.NODE_ENV).toBe("test");
@@ -44,37 +58,55 @@ describe("config/env", () => {
     expect(typeof env.PORT).toBe("number");
   });
 
-  it("falls back to the documented defaults when the optional variables are absent", { timeout: 60_000 }, () => {
-    const cleanEnv = { ...process.env };
-    delete cleanEnv.PORT;
-    delete cleanEnv.LOG_LEVEL;
-    delete cleanEnv.NODE_ENV;
+  it(
+    "falls back to the documented defaults when the optional variables are absent",
+    { timeout: 60_000 },
+    () => {
+      const cleanEnv = { ...process.env };
+      delete cleanEnv.PORT;
+      delete cleanEnv.LOG_LEVEL;
+      delete cleanEnv.NODE_ENV;
 
-    const emptyDir = mkdtempSync(path.join(tmpdir(), "env-defaults-"));
-    try {
-      const result = runEnvModule(emptyDir, cleanEnv);
-      expect(result.status).toBe(0);
-      expect(result.stdout).toContain("PORT=4000");
-      expect(result.stdout).toContain("LOG_LEVEL=info");
-      expect(result.stdout).toContain("NODE_ENV=development");
-    } finally {
-      rmSync(emptyDir, { recursive: true, force: true });
-    }
-  });
+      const emptyDir = mkdtempSync(path.join(tmpdir(), "env-defaults-"));
+      try {
+        const result = runEnvModule(emptyDir, cleanEnv);
+        expect(result.status).toBe(0);
+        expect(result.stdout).toContain("PORT=4000");
+        expect(result.stdout).toContain("LOG_LEVEL=info");
+        expect(result.stdout).toContain("NODE_ENV=development");
+      } finally {
+        rmSync(emptyDir, { recursive: true, force: true });
+      }
+    },
+  );
 
-  it("exits with status 1 and names the variable when a required variable is missing", { timeout: 60_000 }, () => {
-    const result = runEnvModule(backendRoot, { ...process.env, DATABASE_URL: "" });
+  it(
+    "exits with status 1 and names the variable when a required variable is missing",
+    { timeout: 60_000 },
+    () => {
+      const result = runEnvModule(backendRoot, {
+        ...process.env,
+        DATABASE_URL: "",
+      });
 
-    expect(result.status).toBe(1);
-    expect(result.stderr).toContain("Invalid environment variables:");
-    expect(result.stderr).toContain("DATABASE_URL");
-  });
+      expect(result.status).toBe(1);
+      expect(result.stderr).toContain("Invalid environment variables:");
+      expect(result.stderr).toContain("DATABASE_URL");
+    },
+  );
 
-  it("refuses a session secret that is too short to be safe", { timeout: 60_000 }, () => {
-    const result = runEnvModule(backendRoot, { ...process.env, BETTER_AUTH_SECRET: "short" });
+  it(
+    "refuses a session secret that is too short to be safe",
+    { timeout: 60_000 },
+    () => {
+      const result = runEnvModule(backendRoot, {
+        ...process.env,
+        BETTER_AUTH_SECRET: "short",
+      });
 
-    expect(result.status).toBe(1);
-    expect(result.stderr).toContain("Invalid environment variables:");
-    expect(result.stderr).toContain("BETTER_AUTH_SECRET");
-  });
+      expect(result.status).toBe(1);
+      expect(result.stderr).toContain("Invalid environment variables:");
+      expect(result.stderr).toContain("BETTER_AUTH_SECRET");
+    },
+  );
 });
