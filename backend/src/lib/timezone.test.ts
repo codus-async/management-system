@@ -63,4 +63,17 @@ describe("lib/timezone", () => {
 
     expect(startOfDay(instant).toISOString()).toBe("2026-01-01T00:00:00.000Z");
   });
+
+  it("uses the current instant when no argument is passed", async () => {
+    const { startOfDay, endOfDay } = await helperFor("Africa/Lagos");
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-03-09T23:30:00.000Z"));
+
+    try {
+      expect(startOfDay().toISOString()).toBe("2026-03-10T00:00:00.000Z");
+      expect(endOfDay().toISOString()).toBe("2026-03-10T23:59:59.999Z");
+    } finally {
+      vi.useRealTimers();
+    }
+  });
 });

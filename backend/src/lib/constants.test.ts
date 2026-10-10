@@ -84,4 +84,67 @@ describe("lib/constants", () => {
       "restored",
     ]);
   });
+
+  it("rejects an empty, missing, or wrongly cased token", () => {
+    expect(() => token(TASK_STATUSES, "", "status")).toThrow(InvalidTokenError);
+    expect(() => token(TASK_STATUSES, undefined, "status")).toThrow(
+      InvalidTokenError,
+    );
+    expect(() => token(TASK_STATUSES, "Open", "status")).toThrow(
+      InvalidTokenError,
+    );
+  });
+
+  it("names the rejected value in the message so a bad write is easy to trace", () => {
+    expect(() => token(TASK_STATUSES, "archived", "status")).toThrow(
+      'received "archived"',
+    );
+    expect(() => token(TASK_STATUSES, 7, "status")).toThrow("received 7");
+  });
+
+  it("validates every entity that carries a closed set column", () => {
+    expect(() =>
+      validateEntityTokens("meeting", { status: "cancelled" }),
+    ).not.toThrow();
+    expect(() => validateEntityTokens("meeting", { status: "draft" })).toThrow(
+      InvalidTokenError,
+    );
+    expect(() =>
+      validateEntityTokens("follow_up", { status: "dismissed" }),
+    ).not.toThrow();
+    expect(() =>
+      validateEntityTokens("pending_decision", { status: "approved" }),
+    ).not.toThrow();
+    expect(() =>
+      validateEntityTokens("pending_decision", { status: "maybe" }),
+    ).toThrow(InvalidTokenError);
+    expect(() =>
+      validateEntityTokens("attachment", { parentType: "follow_up" }),
+    ).not.toThrow();
+    expect(() =>
+      validateEntityTokens("attachment", { parentType: "invoice" }),
+    ).toThrow(InvalidTokenError);
+  });
+
+  it("skips a closed set column the caller did not send", () => {
+    expect(() =>
+      validateEntityTokens("task", { priority: "high" }),
+    ).not.toThrow();
+    expect(() =>
+      validateEntityTokens("meeting", { title: "Board sync" }),
+    ).not.toThrow();
+  });
+
+  it("returns early for entity types that have no closed set columns", () => {
+    expect(() =>
+      validateEntityTokens("contact", {
+        name: "Ada",
+        email: "ada@example.com",
+      }),
+    ).not.toThrow();
+    expect(() =>
+      validateEntityTokens("notification", { title: "Task due", readAt: null }),
+    ).not.toThrow();
+    expect(() => validateEntityTokens("user", { role: "CEO" })).not.toThrow();
+  });
 });

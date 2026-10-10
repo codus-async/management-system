@@ -92,6 +92,7 @@ async function runSeed(store: Store) {
 
 afterEach(() => {
   vi.restoreAllMocks();
+  vi.unstubAllEnvs();
   vi.doUnmock("../src/lib/prisma.js");
   vi.doUnmock("../src/lib/auth.js");
   process.exitCode = undefined;
@@ -183,5 +184,30 @@ describe("prisma/seed", () => {
     );
     expect(process.exitCode).toBe(1);
     expect(store.signUpEmail).not.toHaveBeenCalled();
+  });
+
+  it("leaves the PA role to the database default and only updates the CEO row", async () => {
+    const store = userStore();
+
+    await runSeed(store);
+
+    expect(store.update).toHaveBeenCalledTimes(1);
+    expect(store.update).toHaveBeenCalledWith({
+      where: { id: "user-2" },
+      data: { role: "CEO" },
+    });
+  });
+
+  it("reads the account emails from the seed environment variables", async () => {
+    const store = userStore();
+    vi.stubEnv("SEED_PA_EMAIL", "assistant@example.com");
+    vi.stubEnv("SEED_CEO_EMAIL", "boss@example.com");
+
+    await runSeed(store);
+
+    expect(store.users.map((user) => user.email).sort()).toEqual([
+      "assistant@example.com",
+      "boss@example.com",
+    ]);
   });
 });

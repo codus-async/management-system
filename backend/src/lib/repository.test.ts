@@ -144,3 +144,82 @@ describe("lib/repository updateRow", () => {
     expect(update).not.toHaveBeenCalled();
   });
 });
+
+describe("lib/repository other closed set columns", () => {
+  it("rejects an attachment parent type outside the constants module before anything is written", async () => {
+    const create = vi.fn(async (data: { id: string }) => data);
+
+    await expect(
+      createRow({
+        entityType: "attachment",
+        actorId: "user-1",
+        data: { parentType: "invoice", fileName: "deck.pdf" },
+        create,
+      }),
+    ).rejects.toThrow(InvalidTokenError);
+    expect(create).not.toHaveBeenCalled();
+    expect(mocks.activityCreate).not.toHaveBeenCalled();
+  });
+
+  it("rejects a follow up status outside the constants module", async () => {
+    const create = vi.fn(async (data: { id: string }) => data);
+
+    await expect(
+      createRow({
+        entityType: "follow_up",
+        actorId: "user-1",
+        data: { title: "Call the bank", status: "someday" },
+        create,
+      }),
+    ).rejects.toThrow(InvalidTokenError);
+  });
+
+  it("logs only the keys that changed out of a multi key patch", async () => {
+    const update = vi.fn(
+      async (data: { status: string; title: string }) => data,
+    );
+
+    await updateRow({
+      entityType: "task",
+      entityId: "task-1",
+      actorId: "user-1",
+      current: { status: "open", title: "Send deck" },
+      data: { status: "done", title: "Send deck" },
+      update,
+    });
+
+    expect(mocks.activityCreate).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        payload: { before: { status: "open" }, after: { status: "done" } },
+      }),
+    });
+  });
+
+  it("stores the activity payload as JSON so a date survives the write", async () => {
+    const create = vi.fn(
+      async (data: { id: string; title: string; startsAt: Date }) => data,
+    );
+
+    const row = await createRow({
+      entityType: "meeting",
+      actorId: "user-1",
+      data: {
+        title: "Board sync",
+        startsAt: new Date("2026-10-10T23:30:00.000Z"),
+      },
+      create,
+    });
+
+    expect(mocks.activityCreate).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        payload: {
+          after: {
+            id: row.id,
+            title: "Board sync",
+            startsAt: "2026-10-10T23:30:00.000Z",
+          },
+        },
+      }),
+    });
+  });
+});
