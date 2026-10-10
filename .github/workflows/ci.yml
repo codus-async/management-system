@@ -21,6 +21,8 @@ jobs:
       - run: npm --prefix client ci
       - run: npm --prefix client run lint
       - run: npm --prefix client run typecheck
+        env:
+          API_ORIGIN: http://localhost:4000
       - run: npm --prefix backend ci
       - run: npm --prefix backend run db:generate
       - run: npm --prefix backend run lint
