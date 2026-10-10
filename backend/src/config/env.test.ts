@@ -32,7 +32,7 @@ const loader = path.join(
   "loader.mjs",
 );
 
-const probe = `import(${JSON.stringify(envEntry)}).then((m) => console.log("PORT=" + m.env.PORT + " LOG_LEVEL=" + m.env.LOG_LEVEL + " NODE_ENV=" + m.env.NODE_ENV));`;
+const probe = `import(${JSON.stringify(envEntry)}).then((m) => console.log("PORT=" + m.env.PORT + " LOG_LEVEL=" + m.env.LOG_LEVEL + " NODE_ENV=" + m.env.NODE_ENV + " TIMEZONE=" + m.env.TIMEZONE));`;
 
 function runEnvModule(cwd: string, envToUse: NodeJS.ProcessEnv) {
   return spawnSync(
@@ -66,6 +66,7 @@ describe("config/env", () => {
       delete cleanEnv.PORT;
       delete cleanEnv.LOG_LEVEL;
       delete cleanEnv.NODE_ENV;
+      delete cleanEnv.TIMEZONE;
 
       const emptyDir = mkdtempSync(path.join(tmpdir(), "env-defaults-"));
       try {
@@ -74,9 +75,39 @@ describe("config/env", () => {
         expect(result.stdout).toContain("PORT=4000");
         expect(result.stdout).toContain("LOG_LEVEL=info");
         expect(result.stdout).toContain("NODE_ENV=development");
+        expect(result.stdout).toContain("TIMEZONE=UTC");
       } finally {
         rmSync(emptyDir, { recursive: true, force: true });
       }
+    },
+  );
+
+  it(
+    "reads TIMEZONE as the IANA zone it was given",
+    { timeout: 60_000 },
+    () => {
+      const result = runEnvModule(backendRoot, {
+        ...process.env,
+        TIMEZONE: "Africa/Lagos",
+      });
+
+      expect(result.status).toBe(0);
+      expect(result.stdout).toContain("TIMEZONE=Africa/Lagos");
+    },
+  );
+
+  it(
+    "refuses a TIMEZONE that is not a real IANA zone",
+    { timeout: 60_000 },
+    () => {
+      const result = runEnvModule(backendRoot, {
+        ...process.env,
+        TIMEZONE: "Not/AZone",
+      });
+
+      expect(result.status).toBe(1);
+      expect(result.stderr).toContain("Invalid environment variables:");
+      expect(result.stderr).toContain("TIMEZONE");
     },
   );
 

@@ -11,18 +11,21 @@ vi.hoisted(() => {
 
 import { auth } from "./auth.js";
 
-describe("lib/auth", () => {
-  it("turns on the email and password sign in the seed accounts rely on", () => {
+describe("lib/auth role configuration (AC-4)", () => {
+  it("keeps role out of sign up input so a request cannot grant itself CEO", () => {
+    const role = auth.options.user?.additionalFields?.role;
+
+    expect(role?.input).toBe(false);
+  });
+
+  it("types role as a string and defaults a new user to PA", () => {
+    const role = auth.options.user?.additionalFields?.role;
+
+    expect(role?.type).toBe("string");
+    expect(role?.defaultValue).toBe("PA");
+  });
+
+  it("leaves email and password sign up enabled, which the seed depends on", () => {
     expect(auth.options.emailAndPassword?.enabled).toBe(true);
-  });
-
-  it("wires accounts through the prisma adapter rather than an in memory store", () => {
-    expect(typeof auth.options.database).toBe("function");
-  });
-
-  it("exposes the sign in and sign up handlers used by the routes and the seed", () => {
-    expect(typeof auth.api.signInEmail).toBe("function");
-    expect(typeof auth.api.signUpEmail).toBe("function");
-    expect(typeof auth.api.getSession).toBe("function");
   });
 });

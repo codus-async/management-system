@@ -1,6 +1,15 @@
 import "dotenv/config";
 import { z } from "zod";
 
+function isTimezone(value: string): boolean {
+  try {
+    new Intl.DateTimeFormat("en-US", { timeZone: value });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 const schema = z.object({
   NODE_ENV: z
     .enum(["development", "test", "production"])
@@ -10,6 +19,9 @@ const schema = z.object({
   BETTER_AUTH_SECRET: z.string().min(32),
   BETTER_AUTH_URL: z.url(),
   LOG_LEVEL: z.string().default("info"),
+  TIMEZONE: z.string().default("UTC").refine(isTimezone, {
+    message: "must be a valid IANA time zone, for example Africa/Lagos",
+  }),
 });
 
 const result = schema.safeParse(process.env);
