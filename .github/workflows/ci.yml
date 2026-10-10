@@ -25,6 +25,8 @@ jobs:
           API_ORIGIN: http://localhost:4000
       - run: npm --prefix backend ci
       - run: npm --prefix backend run db:generate
+        env:
+          DATABASE_URL_UNPOOLED: postgresql://user:password@localhost:5432/postgres
       - run: npm --prefix backend run lint
       - run: npm --prefix backend run typecheck
       - run: npm --prefix backend test
