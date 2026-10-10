@@ -5,7 +5,7 @@
 - **Language / Runtime**: TypeScript, Node 20
 - **Framework**: Next.js 16 (App Router, React 19) in `client/`; Express 5 in `backend/`
 - **Key dependencies**: Prisma 7 on Postgres (Neon), Better Auth, Zod, Tailwind CSS 4 + shadcn/ui, pino
-- **Package manager**: npm (no workspaces; `client/` and `backend/` install separately)
+- **Package manager**: npm (no workspaces; install in the root for tooling, plus `client/` and `backend/`)
 
 ## Build approach
 
@@ -14,7 +14,7 @@ Tracer Bullet (one thin real path through every layer first, then thicken one se
 ## Commands
 
 ```bash
-# Install (run once in client/ and once in backend/)
+# Install (run once in the root, client/, and backend/)
 npm install
 
 # Dev: client on 3000, backend on 4000, Next rewrites /api/* to the backend
@@ -23,7 +23,13 @@ npm run dev
 # Build and start (same scripts in both apps)
 npm run build && npm run start
 
+# Root only (tooling)
+npm run format         # prettier --write .
+npm run format:check   # prettier --check .
+npm run verify         # format + lint + typecheck; what the pre-commit hook runs
+
 # Backend only
+npm run lint           # eslint
 npm run typecheck      # tsc --noEmit
 npm test               # vitest run
 npm run db:migrate     # prisma migrate dev
@@ -31,7 +37,10 @@ npm run seed           # first accounts
 
 # Client only
 npm run lint           # eslint
+npm run typecheck      # next typegen && tsc --noEmit
 ```
+
+Backend note: in `backend/`, the `typescript` package is aliased to the TypeScript 6 API so typescript-eslint can load, and `tsc` comes from `@typescript/native` (TypeScript 7).
 
 ## Specs
 
@@ -46,7 +55,7 @@ Stored in `docs/specs/`. Format: `docs/specs/NNNN-title.md`.
 - Folder by feature for new code; the scaffolded `routes/`/`lib/`/`config/` layout in `backend/` stays as it is.
 - Before every commit: lint, format, typecheck; the pre-commit hook blocks the commit when one fails.
 - Test gate before a feature is done: unit plus integration; browser tests come with the features that need them.
-- CI on push: lint, typecheck, test on GitHub.
+- CI on push: format check, lint, typecheck, test on GitHub.
 - General craft: consistent error handling, consistent naming, documented public APIs, conventional commit messages, named exports only, DRY, YAGNI, reusability, modularity, performance first, accessibility baseline (WCAG AA).
 - server components for all root pages in client/
 - separation of concerns (hooks hold logic, data holds data, components render view)
@@ -58,11 +67,13 @@ Stored in `docs/specs/`. Format: `docs/specs/NNNN-title.md`.
 - integration: on
 - branch prefix: feat/, fix/, chore/
 - commit: per-milestone
+- enforced by hooks: pre-commit runs the branch prefix check plus `npm run verify`; commit-msg runs commitlint (conventional messages)
 
 ## Agent skills
 
 Load only the ones the current task needs.
 
+- [antfu](.agents/skills/antfu/): `antfu/skills`, opinionated lint and format workflow conventions for JS/TS
 - [api-and-interface-design](.agents/skills/api-and-interface-design/): `addyosmani/agent-skills`, API surface and interface design
 - [api-design-principles](.agents/skills/api-design-principles/): `wshobson/agents`, REST API design
 - [better-auth-best-practices](.agents/skills/better-auth-best-practices/): `better-auth/skills`, Better Auth config, adapters, sessions
@@ -72,6 +83,7 @@ Load only the ones the current task needs.
 - [cloudinary-next](.agents/skills/cloudinary-next/): `cloudinary-devs/skills`, Cloudinary with Next.js
 - [cloudinary-react](.agents/skills/cloudinary-react/): `cloudinary-devs/skills`, Cloudinary React SDK
 - [cloudinary-transformations](.agents/skills/cloudinary-transformations/): `cloudinary-devs/skills`, transformation URLs
+- [conventional-commit](.agents/skills/conventional-commit/): `github/awesome-copilot`, authoring conventional commit messages
 - [create-auth](.agents/skills/create-auth/): `better-auth/skills`, scaffolding auth flows
 - [deploy-to-vercel](.agents/skills/deploy-to-vercel/): `vercel-labs/agent-skills`, Vercel deploys
 - [e2e-testing-patterns](.agents/skills/e2e-testing-patterns/): `wshobson/agents`, E2E suite structure
@@ -96,6 +108,7 @@ Load only the ones the current task needs.
 - [sentry-nextjs-sdk](.agents/skills/sentry-nextjs-sdk/): `getsentry/sentry-agent-skills`, `@sentry/nextjs` setup
 - [sentry-react-sdk](.agents/skills/sentry-react-sdk/): `getsentry/sentry-agent-skills`, Sentry React SDK
 - [shadcn](.agents/skills/shadcn/): `shadcn-ui/ui`, shadcn components
+- [shared-tooling-eslint-prettier](.agents/skills/shared-tooling-eslint-prettier/): `agents-inc/skills`, ESLint 9 flat config and Prettier v3 shared setup for TS projects
 - [tailwind-design-system](.agents/skills/tailwind-design-system/): `wshobson/agents`, Tailwind tokens and design system
 - [tailwind-v4-shadcn](.agents/skills/tailwind-v4-shadcn/): `secondsky/claude-skills`, Tailwind 4 with shadcn
 - [two-factor-authentication-best-practices](.agents/skills/two-factor-authentication-best-practices/): `better-auth/skills`, TOTP, OTP, backup codes
