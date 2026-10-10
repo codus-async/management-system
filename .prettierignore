@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.next/
+tsconfig.tsbuildinfo
+**/src/generated/
+docs/
+.agents/
+.claude/
+*.md
+package-lock.json
+.env*
+*.db
