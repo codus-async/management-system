@@ -15,7 +15,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | B | Backend scaffold | Foundation | in-progress |
 | 18 | Stack & architecture | Foundation | in-progress |
 | 1 | Coding standards & tooling | Foundation | done |
-| 2 | Data model | Foundation | planned |
+| 2 | Data model | Foundation | in-progress |
 | 3 | Design system & UI foundation | Foundation | planned |
 | 4 | Auth & roles | Slice 1 | planned |
 | 5 | Schedule & meetings | Slice 1 | planned |
@@ -57,10 +57,18 @@ Capture conventions from the real scaffold, then install lint, format, and pre c
 - [x] Check it runs clean: `/test`
 Tooling in `package.json`, `.prettierrc.json`, `.husky/pre-commit`, `.husky/commit-msg`, `commitlint.config.js`, `.github/workflows/ci.yml`, `backend/eslint.config.mjs`, `backend/vitest.config.ts`, `AGENTS.md`
 
-### 2. Data model · needs a decision
+### 2. Data model · in-progress
 The core entities every later slice builds on: users and roles, meetings, tasks, contacts, follow ups, pending decisions, attachments, activity for trash.
 **Done when:** entities and relationships support every later slice (schedule, tasks, contacts, follow ups, decisions, briefings) without a breaking migration.
-- [ ] Design it (spec): `/architect data model`
+- [x] Design it (spec): `/architect data model`
+- [x] Build it: /develop data model
+  - [x] Schema and migration: constants module, Prisma models, role config, one migration, satisfies AC-1, AC-2, AC-3, AC-5, AC-6, AC-9
+  - [x] Write path: repository create helper, Activity wiring, soft delete conventions, satisfies AC-3, AC-8, AC-10
+  - [x] Seed roles and timezone helper, satisfies AC-4, AC-7
+  - [x] Schema level tests, satisfies AC-1, AC-3, AC-4, AC-5, AC-7
+- [ ] Verify it: /check verify data model
+- [ ] Test it: /test data model
+Spec [0002](../specs/0002-domain-data-model/index.md) · code in `backend/prisma/`, `backend/src/lib/`
 
 ### 3. Design system & UI foundation · needs a decision
 Visual language, layout, and base components so every screen feels like one product and works from the keyboard.

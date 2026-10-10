@@ -18,10 +18,23 @@ model User {
   email         String
   emailVerified Boolean   @default(false)
   image         String?
+  role          String    @default("PA")
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+
+  meetingsCreated     Meeting[]
+  contactsCreated     Contact[]
+  tasksCreated        Task[]
+  tasksAssigned       Task[]            @relation("TaskAssignee")
+  followUpsCreated    FollowUp[]
+  followUpsAssigned   FollowUp[]        @relation("FollowUpAssignee")
+  decisionsCreated    PendingDecision[]
+  decisionsMade       PendingDecision[] @relation("PendingDecisionDecider")
+  attachmentsUploaded Attachment[]
+  notifications       Notification[]
+  activitiesActed     Activity[]        @relation("ActivityActor")
 
   @@unique([email])
   @@map("user")
@@ -73,4 +86,163 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+model Meeting {
+  id          String    @id
+  title       String
+  startsAt    DateTime
+  endsAt      DateTime
+  location    String?
+  notes       String?
+  status      String    @default("scheduled")
+  createdById String
+  createdBy   User      @relation(fields: [createdById], references: [id], onDelete: Restrict)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+
+  attendees        MeetingAttendee[]
+  tasks            Task[]
+  followUps        FollowUp[]
+  pendingDecisions PendingDecision[]
+
+  @@index([startsAt])
+}
+
+model MeetingAttendee {
+  meetingId String
+  contactId String
+  roleLabel String?
+  meeting   Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  contact   Contact @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@id([meetingId, contactId])
+}
+
+model Contact {
+  id          String    @id
+  name        String
+  company     String?
+  email       String?
+  phone       String?
+  notes       String?
+  createdById String
+  createdBy   User      @relation(fields: [createdById], references: [id], onDelete: Restrict)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+
+  meetings  MeetingAttendee[]
+  tasks     Task[]
+  followUps FollowUp[]
+
+  @@index([name])
+}
+
+model Task {
+  id               String    @id
+  title            String
+  description      String?
+  dueAt            DateTime?
+  priority         String    @default("medium")
+  status           String    @default("open")
+  assigneeId       String
+  assignee         User      @relation("TaskAssignee", fields: [assigneeId], references: [id], onDelete: Restrict)
+  createdById      String
+  createdBy        User      @relation(fields: [createdById], references: [id], onDelete: Restrict)
+  relatedContactId String?
+  relatedContact   Contact?  @relation(fields: [relatedContactId], references: [id], onDelete: SetNull)
+  relatedMeetingId String?
+  relatedMeeting   Meeting?  @relation(fields: [relatedMeetingId], references: [id], onDelete: SetNull)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  deletedAt        DateTime?
+
+  @@index([status, dueAt])
+}
+
+model FollowUp {
+  id              String    @id
+  title           String
+  dueAt           DateTime?
+  status          String    @default("pending")
+  assigneeId      String
+  assignee        User      @relation("FollowUpAssignee", fields: [assigneeId], references: [id], onDelete: Restrict)
+  sourceContactId String?
+  sourceContact   Contact?  @relation(fields: [sourceContactId], references: [id], onDelete: SetNull)
+  sourceMeetingId String?
+  sourceMeeting   Meeting?  @relation(fields: [sourceMeetingId], references: [id], onDelete: SetNull)
+  createdById     String
+  createdBy       User      @relation(fields: [createdById], references: [id], onDelete: Restrict)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
+
+  @@index([dueAt])
+}
+
+model PendingDecision {
+  id               String    @id
+  title            String
+  context          String?
+  status           String    @default("pending")
+  dueAt            DateTime?
+  relatedMeetingId String?
+  relatedMeeting   Meeting?  @relation(fields: [relatedMeetingId], references: [id], onDelete: SetNull)
+  decidedById      String?
+  decidedBy        User?     @relation("PendingDecisionDecider", fields: [decidedById], references: [id], onDelete: SetNull)
+  decisionComment  String?
+  decidedAt        DateTime?
+  createdById      String
+  createdBy        User      @relation(fields: [createdById], references: [id], onDelete: Restrict)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  deletedAt        DateTime?
+
+  @@index([status, dueAt])
+}
+
+model Attachment {
+  id           String   @id
+  fileName     String
+  mimeType     String
+  size         Int
+  storagePath  String
+  parentType   String
+  parentId     String
+  uploadedById String
+  uploadedBy   User     @relation(fields: [uploadedById], references: [id], onDelete: Restrict)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([parentType, parentId])
+}
+
+model Notification {
+  id          String    @id
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Restrict)
+  type        String
+  title       String
+  body        String?
+  relatedType String?
+  relatedId   String?
+  readAt      DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([userId, readAt])
+}
+
+model Activity {
+  id         String   @id
+  entityType String
+  entityId   String
+  action     String
+  actorId    String?
+  actor      User?    @relation("ActivityActor", fields: [actorId], references: [id], onDelete: Restrict)
+  payload    Json?
+  createdAt  DateTime @default(now())
+
+  @@index([entityType, entityId])
 }
