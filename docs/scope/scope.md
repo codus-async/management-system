@@ -66,8 +66,8 @@ The core entities every later slice builds on: users and roles, meetings, tasks,
   - [x] Write path: repository create helper, Activity wiring, soft delete conventions, satisfies AC-3, AC-8, AC-10
   - [x] Seed roles and timezone helper, satisfies AC-4, AC-7
   - [x] Schema level tests, satisfies AC-1, AC-3, AC-4, AC-5, AC-7
-- [ ] Verify it: /check verify data model
-- [ ] Test it: /test data model
+- [x] Verify it: /check verify data model
+- [x] Test it: /test data model
 Spec [0002](../specs/0002-domain-data-model/index.md) · code in `backend/prisma/`, `backend/src/lib/`
 
 ### 3. Design system & UI foundation · needs a decision
