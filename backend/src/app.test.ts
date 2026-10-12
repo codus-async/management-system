@@ -23,8 +23,21 @@ vi.mock("./lib/prisma.js", () => {
     createdAt: new Date("2026-01-01T00:00:00.000Z"),
     updatedAt: new Date("2026-01-01T00:00:00.000Z"),
   };
-  const findUserByEmail = async ({ where }: { where?: { email?: string } }) =>
-    where?.email === "pa@example.com" ? existingUser : null;
+  const findUserByEmail = async ({
+    where,
+  }: {
+    where?: { email?: unknown };
+  }) => {
+    const raw = where?.email;
+    const email =
+      typeof raw === "object" && raw !== null
+        ? (raw as { equals?: string }).equals
+        : raw;
+    if (email === "db-down@example.com") {
+      throw new Error("database unreachable");
+    }
+    return email === "pa@example.com" ? existingUser : null;
+  };
   return {
     prisma: {
       $queryRaw: vi.fn().mockResolvedValue([{ "?column?": 1 }]),
@@ -133,6 +146,17 @@ describe("app", () => {
 
     expect(knownWithoutCredentials.status).toBe(unknown.status);
     expect(knownWithoutCredentials.body).toEqual(unknown.body);
+  });
+
+  it("answers a broken database with a json error body instead of an empty 500", async () => {
+    const res = await request(app)
+      .post("/api/auth/sign-in/email")
+      .set(trustedOrigin)
+      .send({ email: "db-down@example.com", password: "local-dev-password" });
+
+    expect(res.status).toBe(500);
+    expect(res.headers["content-type"]).toContain("application/json");
+    expect(res.body).toEqual({ error: "Internal server error" });
   });
 
   it("rejects malformed json bodies without taking the server down", async () => {
