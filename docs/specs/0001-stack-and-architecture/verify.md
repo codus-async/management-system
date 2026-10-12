@@ -1,4 +1,4 @@
-# Verify: Stack & architecture · spec 0001 · updated 2026-10-09
+# Verify: Stack & architecture · spec 0001 · updated 2026-10-12
 
 _Steps derived from spec 0001 and the feature's Done when. `/check verify` runs these; `/test` locks the durable ones._
 
@@ -26,7 +26,7 @@ Acceptance criteria, taken from the scope's Done when:
 - [x] `cd backend && npm run typecheck` → passes → AC-1
 - [x] `cd backend && npm run build && PORT=4100 node dist/index.js` → `api listening`, health returns ok → production API build runs → AC-3
 - [x] `cd client && npm run build` → build finishes → production web build runs → AC-3
-- [ ] `test -f render.yaml && grep -q 'prisma migrate deploy' render.yaml` → Render build applies migrations → AC-3
+- [x] `test -f render.yaml && grep -q 'db:deploy' render.yaml && grep -q '"db:deploy": "prisma migrate deploy"' backend/package.json` → the Render build runs `npm run db:deploy`, which is `prisma migrate deploy` → AC-3
 - [x] `test -f docs/deploy.md && test -f backend/.env.example && test -f client/.env.example` → environment variables documented → AC-3
 - [x] `git -C . check-ignore backend/.env client/.env.local` → both ignored → secrets stay out of the repo → AC-3
 
