@@ -13,7 +13,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 |---|---------|-------|--------|
 | A | Client scaffold | Foundation | existing |
 | B | Backend scaffold | Foundation | in-progress |
-| 18 | Stack & architecture | Foundation | in-progress |
+| 18 | Stack & architecture | Foundation | done |
 | 1 | Coding standards & tooling | Foundation | done |
 | 2 | Data model | Foundation | done |
 | 3 | Design system & UI foundation | Foundation | planned |
@@ -40,7 +40,7 @@ Pre workflow Next.js app: default start page, Tailwind, ESLint, and its own Next
 ### B. Backend scaffold · in-progress
 Express and TypeScript started but not running yet: the dev script points at a missing `src/index.ts` and both source files are empty, so it does not boot. Finishing it is the first build job, via `/develop`. code in `backend/`
 
-### 18. Stack & architecture · in-progress
+### 18. Stack & architecture · done
 Execute the stack decision from spec 0001: one git repo at the root, both apps booting locally on the decided services, the database migrated, auth mounted, and the proxy working.
 **Done when:** both apps run locally against Neon with migrations applied, Better Auth sign in works through the proxy, and the first deploy targets Vercel and Render with the environment variables documented.
 - [x] Design it (spec): `/architect stack & architecture`
