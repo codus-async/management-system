@@ -63,6 +63,7 @@ Stored in `docs/specs/`. Format: `docs/specs/NNNN-title/index.md`, with `rationa
 - comments only when necessary and single line only
 - Domain writes go through `backend/src/lib/repository.ts` (UUID v4 ids from `crypto.randomUUID`, an Activity row for created and updated, closed set columns validated against `backend/src/lib/constants.ts`); default reads filter `deletedAt IS NULL`, and reads that cross a relation filter soft deleted parents
 - Day boundaries come from `backend/src/lib/timezone.ts`, which reads the `TIMEZONE` env var (IANA zone, default UTC, an unparseable value fails config load); no other code builds a Date for domain logic
+- API errors answer as JSON `{ error }` from the central handler in `backend/src/app.ts`: a throw in a route becomes that body, a 4xx keeps its message, a 500 is logged by pino and returns "Internal server error" with no internals, so routes do not need their own catch for the envelope
 
 ## Git
 
