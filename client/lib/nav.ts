@@ -22,7 +22,7 @@ export type NavSection = {
 
 export const NAV_SECTIONS: readonly NavSection[] = [
   {
-    label: "Sections",
+    label: "Today",
     items: [
       {
         label: "Dashboard",
@@ -37,6 +37,11 @@ export const NAV_SECTIONS: readonly NavSection[] = [
         disabled: true,
       },
       { label: "Tasks", href: "/tasks", icon: ListTodoIcon, disabled: true },
+    ],
+  },
+  {
+    label: "Office",
+    items: [
       {
         label: "Contacts",
         href: "/contacts",
@@ -61,4 +66,13 @@ export const NAV_SECTIONS: readonly NavSection[] = [
 
 export function isNavItemDisabled(item: NavItem): boolean {
   return item.disabled === true;
+}
+
+export function isNavItemActive(item: NavItem, pathname: string): boolean {
+  if (isNavItemDisabled(item)) return false;
+  return pathname === item.href || pathname.startsWith(`${item.href}/`);
+}
+
+export function hasDisabledNavItems(sections: readonly NavSection[]): boolean {
+  return sections.some((section) => section.items.some(isNavItemDisabled));
 }

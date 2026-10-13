@@ -75,3 +75,38 @@ Acceptance criteria, taken from the spec's Requirements:
 - Toggle theme: pick system, then change the operating system preference → the page follows without a reload, since next-themes owns the state
 - Demo form validation messages: change a message in the Zod schema and resubmit → the text on screen changes with it
 - Contrast verification: change one token in `globals.css` to a value below its bar and run `design:check` → the run fails, which proves the gate reads the code rather than a copy
+
+## Shell contents (sidebar and top bar rebuild) · added 2026-10-13
+
+Steps for the sidebar and top bar rework, under the same acceptance criteria.
+
+### UI / manual
+
+- [ ] Open `/` at a desktop width → the sidebar shows the brand lockup (mark, `CEO PA` wordmark, `Office of the CEO`), the `Today` and `Office` groups, every section as a disabled row, and the note "Sections open here as they're built." on a hairline → AC-5
+- [ ] Collapse the sidebar with the panel button → the mark shrinks onto the icon column, group labels and the note disappear, and no label spills outside the rail → AC-5
+- [ ] Set the viewport to 390 by 844 → the top bar shows the trigger, the brand, the theme toggle, and the account button with nothing cut off, and the trigger opens the drawer → AC-4, AC-5
+- [ ] Hover the search slot, then open the account menu and press Escape → the search tip reads "Search is not available yet", the menu opens on "Not signed in" with `Sign in` first, and focus returns to the trigger → AC-5
+- [ ] Tab across the shell → order is trigger, theme options, account, then page content, disabled rows are skipped, and every stop shows a full opacity ring → AC-4
+- [ ] Switch light to dark → the lockup, the groups, the note, and the top bar all recolour from tokens, with no raw colour in the changed files → AC-2, AC-9
+
+### Commands
+
+- [ ] `cd client && npx vitest run` → the suite passes, including the nav group label and nav helper tests → AC-5
+- [ ] `cd client && npm run a11y` with the dev server running → four page states, zero violations → AC-4, AC-5, AC-9
+- [ ] `npm run verify` at the repo root → format, lint, and typecheck clean → AC-10
+- [ ] `cd client && npm run build` → the production build finishes → AC-10
+
+### Acceptance-criteria coverage
+
+- AC-2 covered by the raw colour search over the changed files
+- AC-4 covered by the tab through the shell and the `a11y` run
+- AC-5 covered by the desktop, collapsed, and 390 pixel steps, the nav config tests, and the `a11y` run
+- AC-9 covered by the theme switch and the `design:check` and `a11y` runs
+- AC-10 covered by the root `verify` and the client build
+- AC-12 covered by the selected row step below, once a section is built
+
+### Value sourcing rows worth varying
+
+- Render the sidebar nav: flip one item's `disabled` to `false` in `client/lib/nav.ts` → the row becomes a link and the footer note disappears once no item is disabled, since the config is the only source → AC-5
+- Render a hovered or selected row: with a built section live, open its route → the row takes the accent surface from `--accent`, and the note stays hidden → AC-12
+- Toggle theme: pick system and change the operating system preference → the sidebar and the top bar follow without a reload, since next-themes owns the state
