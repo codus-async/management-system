@@ -64,6 +64,31 @@ all qualify. Apply it to the cell, not the table:
 <TableCell className="tabular-nums">2 days</TableCell>
 ```
 
+## Shell
+
+Every screen sits inside one frame: a left sidebar and a top bar. The sidebar
+carries the brand, the section navigation from `lib/nav.ts`, and a footer note
+while sections are still unbuilt. On a small screen it becomes a drawer opened
+from the panel button in the bar.
+
+The bar holds, on the left, that panel button and a borderless search slot: a
+muted pill with a search icon and the word Search, shown at every width, where
+it shrinks and truncates rather than hiding. On the right sits an inert bell,
+then a user menu opened from an avatar beside the name.
+
+Three slots are placeholders on purpose. Each belongs to the feature that will
+replace it, and none of them pretends to work today:
+
+| Slot | Now | Replaced by |
+|---|---|---|
+| Search | Muted pill, tip `Search is not available yet`, not focusable | Feature 12, Search |
+| Bell | Icon with the tip `Notifications arrive with reminders`, announced to nobody | Feature 6, Tasks and reminders |
+| Name | `Not signed in` beside the avatar, with Profile and Logout disabled in the menu | Feature 4, Auth and roles |
+
+The theme control lives inside that menu under an Appearance label: light,
+dark, and system as three options. System hands control back to the operating
+system preference, so the choice can always come back.
+
 <!-- tokens:start -->
 
 ## Color tokens

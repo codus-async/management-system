@@ -83,6 +83,7 @@ Visual language, layout, and base components so every screen feels like one prod
   - [x] Ember retune: warm tinted neutrals at hue 80 to 115, four step surface ladder per theme, interactive input and sidebar border held to 3 to 1 against the decorative hairline, terracotta accent with a lifted dark value on ink text, three distinct emphasis surfaces, shadows in light and ladder in dark, regenerate the design.md tables and rewrite its prose to match, satisfies AC-9, AC-11, AC-12, AC-13, AC-14
   - [x] Shell gaps from the retune: declare Newsreader as `--font-newsreader` in the layout, render the SidebarTrigger in the top bar so the mobile drawer opens, rerun axe across both themes and both viewports, satisfies AC-3, AC-5, AC-9
   - [x] UI design guidance: vendor the `frontend-design` skill into `.agents/skills/frontend-design/` with its license, list it in root `AGENTS.md` under `## Agent skills`, satisfies AC-15
+  - [x] Top bar revision: borderless search slot at every width, inert bell placeholder at the right end, avatar and name menu with Profile and Logout disabled and the three way theme control inside under an Appearance label, drop the account button and the mobile brand lockup from the bar, update the design.md shell prose, satisfies AC-5, AC-6
 - [x] Verify it: /check verify design system & UI foundation
 - [x] Test it: /test design system & UI foundation
 Spec [0003](../specs/0003-design-system-ui-foundation/index.md) · code in `client/`

@@ -1,7 +1,6 @@
 "use client";
 
-import { SearchIcon, UserIcon } from "lucide-react";
-import { BrandMark, BrandName } from "@/components/brand";
+import { BellIcon, SearchIcon, UserIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -15,15 +14,33 @@ import {
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { ThemeToggle } from "@/components/theme-toggle";
 
+const SEARCH_LABEL = "Search";
+const SEARCH_TIP = "Search is not available yet";
+const BELL_TIP = "Notifications arrive with reminders";
+const SESSION_NAME = "Not signed in";
+
 function SearchSlot() {
   return (
     <div
-      title="Search is not available yet"
-      className="hidden h-8 w-full min-w-0 max-w-64 flex-1 items-center gap-2 rounded-lg border border-input bg-background px-2.5 text-sm text-muted-foreground sm:flex md:max-w-xs"
+      title={SEARCH_TIP}
+      aria-hidden="true"
+      className="flex h-8 min-w-0 max-w-64 flex-1 items-center gap-2 rounded-full bg-muted px-3 text-sm text-muted-foreground sm:max-w-xs"
     >
-      <SearchIcon aria-hidden="true" className="size-4 shrink-0" />
-      <span className="truncate">Search</span>
+      <SearchIcon className="size-4 shrink-0" />
+      <span className="truncate">{SEARCH_LABEL}</span>
     </div>
+  );
+}
+
+function NotificationsSlot() {
+  return (
+    <span
+      title={BELL_TIP}
+      aria-hidden="true"
+      className="flex size-8 shrink-0 items-center justify-center rounded-md text-muted-foreground"
+    >
+      <BellIcon className="size-4" />
+    </span>
   );
 }
 
@@ -32,29 +49,28 @@ function UserMenu() {
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
-          <Button
-            variant="outline"
-            size="sm"
-            aria-label="Account"
-            className="gap-2"
-          >
+          <Button variant="ghost" size="sm" className="gap-2 px-2">
             <span
               aria-hidden="true"
-              className="flex size-5 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground"
+              className="flex size-7 shrink-0 items-center justify-center rounded-md bg-secondary text-muted-foreground"
             >
-              <UserIcon className="size-3" />
+              <UserIcon className="size-4" />
             </span>
-            <span className="hidden sm:inline">Account</span>
+            <span className="max-w-32 truncate text-muted-foreground sr-only sm:not-sr-only">
+              {SESSION_NAME}
+            </span>
           </Button>
         }
       />
       <DropdownMenuContent align="end" className="w-56">
+        <DropdownMenuItem disabled>Profile</DropdownMenuItem>
+        <DropdownMenuItem disabled>Logout</DropdownMenuItem>
+        <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuLabel>Not signed in</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem disabled>Sign in</DropdownMenuItem>
-          <DropdownMenuItem disabled>Profile</DropdownMenuItem>
-          <DropdownMenuItem disabled>Settings</DropdownMenuItem>
+          <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+          <div className="px-1.5 pb-1.5">
+            <ThemeToggle />
+          </div>
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -65,13 +81,9 @@ function TopBar() {
   return (
     <header className="sticky top-0 z-40 flex h-14 shrink-0 items-center gap-2 border-b bg-background px-2 md:px-4">
       <SidebarTrigger />
-      <div className="flex min-w-0 items-center gap-2 md:hidden">
-        <BrandMark />
-        <BrandName className="text-foreground" />
-      </div>
       <SearchSlot />
-      <div className="ml-auto flex items-center gap-2">
-        <ThemeToggle />
+      <div className="ml-auto flex items-center gap-1">
+        <NotificationsSlot />
         <UserMenu />
       </div>
     </header>
