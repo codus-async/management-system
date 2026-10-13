@@ -118,6 +118,40 @@ Note the decision here and let agents find it by reading the spec.
 **Cons**:
 - An agent building a screen has no reason to open a design system spec, so nothing would change in practice. A decision no agent reads is documentation, not a convention.
 
+### Option 10: Top bar contents settled before auth (chosen)
+
+Give the bar its final shape now, with each slot filled by an honest placeholder: a borderless search slot at the left beside the sidebar trigger, an inert bell at the right end, and a user menu opened from an avatar and the placeholder name "Not signed in", carrying disabled Profile and Logout rows plus the three way theme control under an Appearance label.
+
+**Pros**:
+- The bar is cut once. Features 4, 6, and 12 each fill a slot that already exists instead of re-cutting the chrome, and the shape the engineer asked for is on record before auth lands.
+- The system option survives the move into the menu, so following the operating system's preference stays reachable.
+
+**Cons**:
+- Three inert affordances sit in one bar at once, so a user clicking around early learns that none of them work yet.
+- Disabled Profile and Logout rows advertise sign in as coming, which is honest but reads as unfinished.
+
+### Option 11: Two way light and dark switch, as first asked
+
+Drop the system option and ship a two way control inside the menu.
+
+**Pros**:
+- Simpler control. Two choices are quicker to scan than three, and light against dark is what most tools offer.
+
+**Cons**:
+- Once the user picks light or dark there is no path back to following the operating system, so the "respect the system" behavior this spec verified dies on the first click.
+- It reverses a recorded decision for a convenience the user gets once.
+
+### Option 12: Defer the whole change to auth
+
+Leave the bar as it shipped (account outline button, outlined search slot, theme toggle standing alone) until feature 4 provides a session.
+
+**Pros**:
+- Nothing inert ships. Every affordance on screen does something.
+
+**Cons**:
+- The bar gets cut twice, once now and again at auth, and the bell has no home until feature 6 either way.
+- The engineer's ask was to settle the shape before auth; this declines the ask rather than answering it.
+
 ## Rationale
 
 Option 1 matches the forces that actually shaped this decision. The scope lists this feature as a Foundation phase item with explicit done criteria (design.md covering type, color, spacing, and components; keyboard capable base components; WCAG 2.2 contrast minimums), and the project rule of thumb is foundations before features: retrofitting tokens after twelve screens exist costs more than building them first. Option 2 defers the shell to the dashboard, which would make the dashboard feature secretly own global navigation, a responsibility skew that is hard to unwind. Option 3 fails the scope's own bar and multiplies accessibility risk across every later feature.
@@ -134,6 +168,8 @@ Option 6 then replaced the palette underneath all of that, which is why this rev
 
 Option 7 because the repo already works this way: it vendors skills by copying them in and listing them in root `AGENTS.md`, so this is the existing pattern rather than a new one. Option 8's version of it, retyping the useful rules into `AGENTS.md`, is exactly how a convention rots, because nobody resyncs prose by hand. Option 9 fails on reach, since an agent with a screen to build opens a component file, not a design system spec. The skill is Apache 2.0 and is copied unmodified with its licence file, which satisfies the redistribution conditions. It is scoped to process and writing rather than to palette because Ember is a deliberate choice already on record, and the skill itself says a pinned brief wins; letting it reopen the art direction would undo the consistency this feature exists to create. The one honest cost is worth stating plainly: its calibration section names a warm cream ground, a serif display, and a terracotta accent as the top tell of AI generated design, which is close to what shipped here, so every agent that reads it will be told to question this direction. That is recorded in the spec rather than left to be discovered on a screen six features from now.
 
+The third revision exists because the bar's shape was still open while three features were waiting on it. Feature 4 wants a place to put a session identity, feature 6 wants a bell, and feature 12 wants a search slot; if each arrives to an undecided bar, each one re-decides it, which is how a shared surface drifts. Option 10 settles the shape once and fills every slot with something honest: the search and the bell are visual commitments that do nothing and say so on hover, and the menu carries a placeholder identity rather than an invented person. Option 11 was the engineer's own first instinct and it loses on one specific force rather than on taste: the system option is the only way back to the operating system's preference once a user has chosen, and a control that cannot be undone is the wrong shape for a setting this cheap to keep. Option 12 is the tidy answer that refuses the question. The cost of the chosen option is named rather than hidden: three inert affordances in one bar is a rough edge on purpose, and the reason it is acceptable is that each one is already owned by a feature that will replace it.
+
 ## References
 
 **Project sources** (verifiable, in this repo):
@@ -144,6 +180,7 @@ Option 7 because the repo already works this way: it vendors skills by copying t
 - Installed community skills: `frontend-design`, `shadcn`, `tailwind-v4-shadcn`, `tailwind-design-system`, `react-hook-form`, `zod`
 - The `frontend-design` skill itself (`.agents/skills/frontend-design/SKILL.md`, from `anthropics/skills`, Apache 2.0): its process guidance and its calibration list of design tells
 - `skills-lock.json`: the record of which skills are installed, and the evidence that its `computedHash` is not a plain sha256 of the file
+- Shipped shell code as of commit 5a77046: `client/components/top-bar.tsx`, `client/components/theme-toggle.tsx`, and `client/app/layout.tsx`, which is the state this third revision starts from
 
 **Practices & standards**:
 - WCAG 2.2 AA minimums this feature owns: 4.5 to 1 for normal text and 3 to 1 for large text and **interactive** component boundaries (criteria 1.4.3 and 1.4.11), visible focus not obscured (2.4.7, 2.4.11), and 24 by 24 CSS pixel target size (2.5.8). Criterion 1.4.11 constrains the visual information needed to identify an interactive component and its states; it does not constrain decorative or structural borders.
