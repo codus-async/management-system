@@ -1,0 +1,66 @@
+"use client";
+
+import { SearchIcon, UserIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { ThemeToggle } from "@/components/theme-toggle";
+
+function SearchSlot() {
+  return (
+    <div
+      title="Search is not available yet"
+      className="flex h-8 min-w-0 max-w-64 flex-1 items-center gap-2 rounded-lg border border-input bg-background px-2.5 text-sm text-muted-foreground md:max-w-xs"
+    >
+      <SearchIcon aria-hidden="true" className="size-4 shrink-0" />
+      <span className="truncate">Search</span>
+    </div>
+  );
+}
+
+function UserMenu() {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        render={
+          <Button variant="outline" size="sm" className="gap-2">
+            <UserIcon aria-hidden="true" />
+            <span className="hidden sm:inline">Account</span>
+          </Button>
+        }
+      />
+      <DropdownMenuContent align="end" className="w-56">
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>Not signed in</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem disabled>Profile</DropdownMenuItem>
+          <DropdownMenuItem disabled>Settings</DropdownMenuItem>
+          <DropdownMenuItem disabled>Sign in</DropdownMenuItem>
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+function TopBar() {
+  return (
+    <header className="sticky top-0 z-40 flex h-14 shrink-0 items-center gap-2 border-b bg-background px-2 md:px-4">
+      <SidebarTrigger />
+      <SearchSlot />
+      <div className="ml-auto flex items-center gap-2">
+        <ThemeToggle />
+        <UserMenu />
+      </div>
+    </header>
+  );
+}
+
+export { TopBar };

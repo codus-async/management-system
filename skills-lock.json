@@ -91,6 +91,12 @@
       "skillPath": "better-auth/emailAndPassword/SKILL.md",
       "computedHash": "863886759f729081e265941f4f72c503835d55a1f34f6d63cebe6571159fff4a"
     },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "skillPath": "skills/frontend-design/SKILL.md",
+      "computedHash": "89496d5dd00f4810205f351759594fc2742bf8eea85a2f2b2d1de59f4bd91576"
+    },
     "neon": {
       "source": "neondatabase/agent-skills",
       "sourceType": "github",
@@ -181,6 +187,12 @@
       "skillPath": "prisma-upgrade-v7/SKILL.md",
       "computedHash": "9a65f02d4ae2f3d1e81efb6be888f33a083b1c06d866ff5f762cc30786e4c8ce"
     },
+    "react-hook-form": {
+      "source": "pproenca/dot-skills",
+      "sourceType": "github",
+      "skillPath": "skills/.curated/react-hook-form/SKILL.md",
+      "computedHash": "e9881245bb3f993f93c9fce336ca7a517ce39864aa46c95d04238fc5ebc4e4d1"
+    },
     "sentry-create-alert": {
       "source": "getsentry/sentry-agent-skills",
       "sourceType": "github",
@@ -216,6 +228,12 @@
       "sourceType": "github",
       "skillPath": "src/skills/shared-tooling-eslint-prettier/SKILL.md",
       "computedHash": "532c3bd7f25fef4cc1d59790c0870aab50b8ef663b3e430fd92fbfeb5e11f283"
+    },
+    "suggest-lucide-icons": {
+      "source": "nweii/agent-stuff",
+      "sourceType": "github",
+      "skillPath": "skills/suggest-lucide-icons/SKILL.md",
+      "computedHash": "507097de1714fa79ba8bbec58147cc0b6067cb53a6932a78f3f4ff9e2733b761"
     },
     "tailwind-design-system": {
       "source": "wshobson/agents",

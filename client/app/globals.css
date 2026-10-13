@@ -1,26 +1,246 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  /* Fonts: the layout must set --font-inter, --font-newsreader and --font-geist-mono via next/font. */
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-newsreader);
   --font-mono: var(--font-geist-mono);
+  /* Type scale (Ember): caption 12, body-sm 14, body 16, body-lg 18, H3 20, H2 24, H1 32, display 40 */
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.4;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.5;
+  --text-base: 1rem;
+  --text-base--line-height: 1.6;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.6;
+  --text-xl: 1.25rem;
+  --text-xl--line-height: 1.3;
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: 1.25;
+  --text-3xl: 2rem;
+  --text-3xl--line-height: 1.2;
+  --text-4xl: 2.5rem;
+  --text-4xl--line-height: 1.15;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-subtle: var(--destructive-subtle);
+  --color-destructive-subtle-foreground: var(--destructive-subtle-foreground);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-link: var(--link);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-success-subtle: var(--success-subtle);
+  --color-success-subtle-foreground: var(--success-subtle-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-warning-subtle: var(--warning-subtle);
+  --color-warning-subtle-foreground: var(--warning-subtle-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-info-subtle: var(--info-subtle);
+  --color-info-subtle-foreground: var(--info-subtle-foreground);
+  /* Radius: sm 6px, md 8px (buttons, inputs), lg 10px, xl 14px (cards), 2xl 18px, 3xl 22px (composer, pills) */
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+  --shadow-xs: var(--elevation-xs);
+  --shadow-sm: var(--elevation-sm);
+  --shadow-md: var(--elevation-md);
+  --shadow-lg: var(--elevation-lg);
+  --shadow-xl: var(--elevation-xl);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Ember: warm ivory surfaces, terracotta accent, ink text. Inspired by the Claude interface;
+   approximated from its public look, not official Anthropic tokens. Hex sources in comments. */
+:root {
+  --background: oklch(0.9729 0.0013 106.4); /* #F6F6F5 */
+  --foreground: oklch(0.2603 0.004 106.4); /* #242422 */
+  --card: oklch(0.9938 0.0013 106.4); /* #FDFDFC */
+  --card-foreground: oklch(0.2603 0.004 106.4); /* #242422 */
+  --popover: oklch(1 0 89.9); /* #FFFFFF */
+  --popover-foreground: oklch(0.2603 0.004 106.4); /* #242422 */
+  --primary: oklch(0.5442 0.1197 39.3); /* #A95437 */
+  --primary-foreground: oklch(1 0 89.9); /* #FFFFFF */
+  --secondary: oklch(0.9609 0.0013 106.4); /* #F2F2F1 */
+  --secondary-foreground: oklch(0.2603 0.004 106.4); /* #242422 */
+  --muted: oklch(0.9699 0.0013 106.4); /* #F5F5F4 */
+  --muted-foreground: oklch(0.5375 0.004 106.4); /* #6E6E6B */
+  --accent: oklch(0.9554 0.0093 62.6); /* #F5EFEA */
+  --accent-foreground: oklch(0.2603 0.004 106.4); /* #242422 */
+  --link: oklch(0.5442 0.1197 39.3); /* #A95437 */
+  --destructive: oklch(0.5 0.182 29.5); /* #B42318 */
+  --destructive-foreground: oklch(1 0 0); /* #FFFFFF */
+  --destructive-subtle: oklch(0.948 0.02 25.2); /* #FBE9E7 */
+  --destructive-subtle-foreground: oklch(0.425 0.151 29.4); /* #8F1D14 */
+  --success: oklch(0.529 0.106 154.6); /* #2E7D4F */
+  --success-foreground: oklch(1 0 0); /* #FFFFFF */
+  --success-subtle: oklch(0.95 0.017 156.9); /* #E6F2EA */
+  --success-subtle-foreground: oklch(0.419 0.084 154.9); /* #1F5A38 */
+  --warning: oklch(0.543 0.123 61.8); /* #A15C07 */
+  --warning-foreground: oklch(1 0 0); /* #FFFFFF */
+  --warning-subtle: oklch(0.958 0.029 82.6); /* #FBF0DC */
+  --warning-subtle-foreground: oklch(0.445 0.1 62.1); /* #7A4505 */
+  --info: oklch(0.496 0.127 253.7); /* #2563A8 */
+  --info-foreground: oklch(1 0 0); /* #FFFFFF */
+  --info-subtle: oklch(0.943 0.018 253.3); /* #E4EDF8 */
+  --info-subtle-foreground: oklch(0.409 0.106 255.9); /* #1E4A82 */
+  --border: oklch(0.8752 0.0041 106.5); /* #D6D6D3 */
+  --input: oklch(0.6228 0.003 106.5); /* #878785 */
+  --ring: oklch(0.5442 0.1197 39.3); /* #A95437 */
+  --chart-1: oklch(0.544 0.12 39.3); /* #A95437 */
+  --chart-2: oklch(0.567 0.086 246.5); /* #4A7BA6 */
+  --chart-3: oklch(0.607 0.085 135.8); /* #6B8E5A */
+  --chart-4: oklch(0.751 0.13 79.8); /* #D9A441 */
+  --chart-5: oklch(0.551 0.052 307.4); /* #7A6A8A */
+  --sidebar: oklch(0.9848 0.0013 106.4); /* #FAFAF9 */
+  --sidebar-foreground: oklch(0.2603 0.004 106.4); /* #242422 */
+  --sidebar-primary: oklch(0.5442 0.1197 39.3); /* #A95437 */
+  --sidebar-primary-foreground: oklch(1 0 89.9); /* #FFFFFF */
+  --sidebar-accent: oklch(0.9554 0.0093 62.6); /* #F5EFEA */
+  --sidebar-accent-foreground: oklch(0.2603 0.004 106.4); /* #242422 */
+  --sidebar-border: oklch(0.6524 0.0044 106.5); /* #90908D */
+  --sidebar-ring: oklch(0.5442 0.1197 39.3); /* #A95437 */
+  --radius: 0.625rem;
+  /* Elevation: warm ink shadows, soft and wide */
+  --elevation-xs: 0 1px 2px 0 rgb(20 20 19 / 0.04);
+  --elevation-sm: 0 1px 3px 0 rgb(20 20 19 / 0.06);
+  --elevation-md: 0 2px 8px 0 rgb(20 20 19 / 0.06);
+  --elevation-lg: 0 8px 24px 0 rgb(20 20 19 / 0.08);
+  --elevation-xl: 0 16px 40px 0 rgb(20 20 19 / 0.1);
+}
+
+.dark {
+  --background: oklch(0.1916 0.0043 84.6); /* #151412 */
+  --foreground: oklch(0.9702 0.004 84.6); /* #F6F5F2 */
+  --card: oklch(0.2268 0.0041 84.6); /* #1D1C1A */
+  --card-foreground: oklch(0.9702 0.004 84.6); /* #F6F5F2 */
+  --popover: oklch(0.252 0 89.9); /* #222222 */
+  --popover-foreground: oklch(0.9702 0.004 84.6); /* #F6F5F2 */
+  --primary: oklch(0.6683 0.1447 51); /* #D97736 */
+  --primary-foreground: oklch(0.185 0.004 84.6); /* #131311 */
+  --secondary: oklch(0.2934 0.0039 84.6); /* #2D2C2A */
+  --secondary-foreground: oklch(0.9702 0.004 84.6); /* #F6F5F2 */
+  --muted: oklch(0.2523 0.004 84.6); /* #232220 */
+  --muted-foreground: oklch(0.7252 0.004 84.6); /* #A7A6A3 */
+  --accent: oklch(0.3353 0.0181 45.9); /* #3F342F */
+  --accent-foreground: oklch(0.9702 0.004 84.6); /* #F6F5F2 */
+  --link: oklch(0.6683 0.1447 51); /* #D97736 */
+  --destructive: oklch(0.7449 0.1269 25.8); /* #F28B82 */
+  --destructive-foreground: oklch(0.1913 0 89.9); /* #141414 */
+  --destructive-subtle: oklch(0.3006 0.0665 27.2); /* #4A1F1B */
+  --destructive-subtle-foreground: oklch(0.8212 0.0832 25.4); /* #F6B0A9 */
+  --success: oklch(0.7805 0.1226 156.5); /* #6FCF97 */
+  --success-foreground: oklch(0.1913 0 89.9); /* #141414 */
+  --success-subtle: oklch(0.3208 0.0449 157.6); /* #1E3A2A */
+  --success-subtle-foreground: oklch(0.8491 0.0919 156.5); /* #9BE0B5 */
+  --warning: oklch(0.8341 0.141 85.4); /* #F2C14E */
+  --warning-foreground: oklch(0.1913 0 89.9); /* #141414 */
+  --warning-subtle: oklch(0.314 0.0482 83.5); /* #3D2F12 */
+  --warning-subtle-foreground: oklch(0.8817 0.0996 88.5); /* #F3D58A */
+  --info: oklch(0.745 0.1093 253.3); /* #7AB0F0 */
+  --info-foreground: oklch(0.1913 0 89.9); /* #141414 */
+  --info-subtle: oklch(0.3192 0.0583 257.6); /* #1F3350 */
+  --info-subtle-foreground: oklch(0.8318 0.0696 253.9); /* #A9CBF5 */
+  --border: oklch(0.3485 0.0043 84.6); /* #3B3A38 */
+  --input: oklch(0.5546 0.0046 84.6); /* #747370 */
+  --ring: oklch(0.6683 0.1447 51); /* #D97736 */
+  --chart-1: oklch(0.6683 0.1447 51); /* #D97736 */
+  --chart-2: oklch(0.7114 0.0774 246.6); /* #7AA7D0 */
+  --chart-3: oklch(0.7362 0.0855 134.5); /* #93B67F */
+  --chart-4: oklch(0.8135 0.1184 85.1); /* #E5BC62 */
+  --chart-5: oklch(0.7109 0.0528 304.5); /* #A99ABD */
+  --sidebar: oklch(0.205 0.0042 84.6); /* #181715 */
+  --sidebar-foreground: oklch(0.9702 0.004 84.6); /* #F6F5F2 */
+  --sidebar-primary: oklch(0.6683 0.1447 51); /* #D97736 */
+  --sidebar-primary-foreground: oklch(0.185 0.004 84.6); /* #131311 */
+  --sidebar-accent: oklch(0.3353 0.0181 45.9); /* #3F342F */
+  --sidebar-accent-foreground: oklch(0.9702 0.004 84.6); /* #F6F5F2 */
+  --sidebar-border: oklch(0.5992 0.003 84.6); /* #81807E */
+  --sidebar-ring: oklch(0.6683 0.1447 51); /* #D97736 */
+}
+
+.dark .shadow-xs,
+.dark .shadow-sm,
+.dark .shadow-md,
+.dark .shadow-lg,
+.dark .shadow-xl,
+.dark .shadow-2xl {
+  box-shadow: var(--tw-ring-shadow, none);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+  /* Headings: Newsreader serif at medium weight, the signature of the look. H4 stays sans. */
+  h1,
+  h2,
+  h3 {
+    @apply font-heading font-medium tracking-tight;
+  }
+  h1 {
+    @apply text-3xl;
+  }
+  h2 {
+    @apply text-2xl;
+  }
+  h3 {
+    @apply text-xl;
+  }
+  h4 {
+    @apply text-base font-semibold;
+  }
+  a:not([class]) {
+    @apply text-link underline underline-offset-4;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Important so the ring outranks the outline-none utilities the components ship with. */
+*:focus-visible {
+  outline: 2px solid var(--ring) !important;
+  outline-offset: 2px !important;
 }

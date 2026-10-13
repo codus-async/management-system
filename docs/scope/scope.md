@@ -16,7 +16,7 @@ _These are recommendations to keep your build orderly, not requirements. Skip an
 | 18 | Stack & architecture | Foundation | done |
 | 1 | Coding standards & tooling | Foundation | done |
 | 2 | Data model | Foundation | done |
-| 3 | Design system & UI foundation | Foundation | planned |
+| 3 | Design system & UI foundation | Foundation | in-progress |
 | 4 | Auth & roles | Slice 1 | planned |
 | 5 | Schedule & meetings | Slice 1 | planned |
 | 6 | Tasks & reminders | Slice 2 | planned |
@@ -70,10 +70,22 @@ The core entities every later slice builds on: users and roles, meetings, tasks,
 - [x] Test it: /test data model
 Spec [0002](../specs/0002-domain-data-model/index.md) · code in `backend/prisma/`, `backend/src/lib/`
 
-### 3. Design system & UI foundation · needs a decision
+### 3. Design system & UI foundation
 Visual language, layout, and base components so every screen feels like one product and works from the keyboard.
-**Done when:** `design.md` covers type, color, spacing, and components, base components handle focus and keyboard, and text contrast meets WCAG 2.2 minimums (basis: WCAG 2.2).
-- [ ] Design it (spec): `/architect design system & UI foundation`
+**Done when:** `design.md` covers type, color, spacing, and components, base components handle focus and keyboard, text contrast meets WCAG 2.2 minimums on interactive boundaries, light mode has a real surface ladder so cards separate without a heavy border, and hover and selection states are visible (basis: WCAG 2.2).
+- [x] Design it (spec): `/architect design system & UI foundation`
+- [x] Build it: /develop design system & UI foundation
+  - [x] Tokens and theme: shadcn init, contrast safe border, input, ring, and per theme accent tokens, Inter, next-themes with the three way toggle, satisfies AC-2, AC-3, AC-6, AC-9
+  - [x] Slice 1 components: install the component set, verify keyboard, focus, and target size, satisfies AC-4
+  - [x] App shell: sidebar and top bar, typed nav config with disabled flag, mobile drawer, satisfies AC-5
+  - [x] States and form: empty, loading, and error patterns, React Hook Form with Zod 4 demo form, satisfies AC-7, AC-8
+  - [x] design.md and checks: generate token tables, automated axe check, contrast pass, lint, format, typecheck, satisfies AC-1, AC-9, AC-10
+  - [x] Ember retune: warm tinted neutrals at hue 80 to 115, four step surface ladder per theme, interactive input and sidebar border held to 3 to 1 against the decorative hairline, terracotta accent with a lifted dark value on ink text, three distinct emphasis surfaces, shadows in light and ladder in dark, regenerate the design.md tables and rewrite its prose to match, satisfies AC-9, AC-11, AC-12, AC-13, AC-14
+  - [x] Shell gaps from the retune: declare Newsreader as `--font-newsreader` in the layout, render the SidebarTrigger in the top bar so the mobile drawer opens, rerun axe across both themes and both viewports, satisfies AC-3, AC-5, AC-9
+  - [x] UI design guidance: vendor the `frontend-design` skill into `.agents/skills/frontend-design/` with its license, list it in root `AGENTS.md` under `## Agent skills`, satisfies AC-15
+- [x] Verify it: /check verify design system & UI foundation
+- [x] Test it: /test design system & UI foundation
+Spec [0003](../specs/0003-design-system-ui-foundation/index.md) · code in `client/`
 
 ## Slice 1: Walking skeleton
 
