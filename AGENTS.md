@@ -92,6 +92,7 @@ Load only the ones the current task needs.
 - [deploy-to-vercel](.agents/skills/deploy-to-vercel/): `vercel-labs/agent-skills`, Vercel deploys
 - [e2e-testing-patterns](.agents/skills/e2e-testing-patterns/): `wshobson/agents`, E2E suite structure
 - [email-and-password-best-practices](.agents/skills/email-and-password-best-practices/): `better-auth/skills`, verification, resets, password policy
+- [frontend-design](.agents/skills/frontend-design/): `anthropics/skills`, art direction and interface writing for any UI generation
 - [neon](.agents/skills/neon/): `neondatabase/agent-skills`, Neon platform operations
 - [neon-postgres](.agents/skills/neon-postgres/): `neondatabase/agent-skills`, Neon Postgres usage
 - [neon-postgres-branches](.agents/skills/neon-postgres-branches/): `neondatabase/agent-skills`, database branches per environment
@@ -107,12 +108,14 @@ Load only the ones the current task needs.
 - [prisma-driver-adapter-implementation](.agents/skills/prisma-driver-adapter-implementation/): `prisma/skills`, Prisma 7 driver adapters (`@prisma/adapter-pg`)
 - [prisma-orm-setup](.agents/skills/prisma-orm-setup/): `prisma/skills`, Prisma setup and config
 - [prisma-upgrade-v7](.agents/skills/prisma-upgrade-v7/): `prisma/skills`, v6 to v7 breaking changes
+- [react-hook-form](.agents/skills/react-hook-form/): `pproenca/dot-skills`, React Hook Form performance, patterns, and the v7 render prop components
 - [sentry-create-alert](.agents/skills/sentry-create-alert/): `getsentry/sentry-agent-skills`, Sentry alert setup
 - [sentry-fix-issues](.agents/skills/sentry-fix-issues/): `getsentry/sentry-agent-skills`, triage and fix captured issues
 - [sentry-nextjs-sdk](.agents/skills/sentry-nextjs-sdk/): `getsentry/sentry-agent-skills`, `@sentry/nextjs` setup
 - [sentry-react-sdk](.agents/skills/sentry-react-sdk/): `getsentry/sentry-agent-skills`, Sentry React SDK
 - [shadcn](.agents/skills/shadcn/): `shadcn-ui/ui`, shadcn components
 - [shared-tooling-eslint-prettier](.agents/skills/shared-tooling-eslint-prettier/): `agents-inc/skills`, ESLint 9 flat config and Prettier v3 shared setup for TS projects
+- [suggest-lucide-icons](.agents/skills/suggest-lucide-icons/): `nweii/agent-stuff`, pick Lucide icons for a concept or UI element
 - [tailwind-design-system](.agents/skills/tailwind-design-system/): `wshobson/agents`, Tailwind tokens and design system
 - [tailwind-v4-shadcn](.agents/skills/tailwind-v4-shadcn/): `secondsky/claude-skills`, Tailwind 4 with shadcn
 - [two-factor-authentication-best-practices](.agents/skills/two-factor-authentication-best-practices/): `better-auth/skills`, TOTP, OTP, backup codes
